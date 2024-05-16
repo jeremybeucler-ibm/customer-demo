@@ -14,7 +14,7 @@ else
     echo "Project '$PROJECT_NAME' created."
 fi
 
-base64_encoded_no_auth=$(echo '{"authType":"BASIC_AUTH","credentials":{"username":"","password":""}}' | base64)
+base64_encoded_no_auth=$(echo '{"authType":"BASIC_AUTH","credentials":{"username":"","password":""}}' | base64 -w 0)
 
 # Create the secret and config YAML
 cat << EOF | oc create -f -
@@ -67,10 +67,11 @@ spec:
 EOF
 
 #Get the route
-route=`oc get route | grep server-ping-http- | awk '{print $2}'`
+##route=`oc get route | grep server-ping-http- | awk '{print $2}'`
 #Get the base path
-base=`oc exec $(oc get pods -o name -n ace | grep server-ping) -- cat /workdir-shared/ace-server/run/ping_test/swagger.json | jq -r '.basePath'`
+##base=`oc exec $(oc get pods -o name -n ace | grep server-ping) -- cat /workdir-shared/ace-server/run/ping_test/swagger.json | jq -r '.basePath'`
 #Get the path
-path=`oc exec $(oc get pods -o name -n ace | grep server-ping) -- cat /workdir-shared/ace-server/run/ping_test/swagger.json | jq -r '.paths | to_entries | .[] | .key'`
+##path=`oc exec $(oc get pods -o name -n ace | grep server-ping) -- cat /workdir-shared/ace-server/run/ping_test/swagger.json | jq -r '.paths | to_entries | .[] | .key'`
 #Curl to test
-curl $route$base$path
+##curl $route$base$path
+#curl http://server-ping-http-ace.apps.ocpinstall.gym.lan/ping_test/v1/server
